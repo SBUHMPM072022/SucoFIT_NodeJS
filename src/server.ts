@@ -21,3 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/api/v1/web/division', DatamasterController.DivisionGetAll);
 app.post('/api/v1/web/division', DatamasterController.DivisionCreate);
 app.delete('/api/v1/web/division/:id', DatamasterController.DivisionDelete);
+
+app.get('/api/v1/web/event-type', DatamasterController.EventTypeGetAll);
+app.post('/api/v1/web/event-type', DatamasterController.EventTypeCreate);
+app.delete('/api/v1/web/event-type/:id', DatamasterController.EventTypeDelete);

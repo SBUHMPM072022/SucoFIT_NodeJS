@@ -1,44 +1,44 @@
 import db from "../models"
-import { DivisionDelete, DivisionCreate } from "../interfaces/DivisionInterface";
+import { EventTypeCreate, EventTypeDelete } from "../interfaces/EventTypeInterface";
 
 export const EventTypeService = {
     Create: async({
-        division_name,
-        division_description,
+        event_type,
+        event_type_description,
         created_user
-    }: DivisionCreate) => {
+    }: EventTypeCreate) => {
         try{
-            const divisionCreated = await db.division.create({
-                division_name,
-                division_description, 
+            const eventTypeCreated = await db.event_type.create({
+                event_type,
+                event_type_description, 
                 created_user
             });
 
-            return { result: true, message: "Create division success", data: divisionCreated };
+            return { result: true, message: "Create event type success", data: eventTypeCreated };
         }catch(error){
             return { result: false, message: error, data: null };
         }
     },
     GetAll: async() => {
         try{
-            const divisionFound = await db.division.findAll({
-                attributes:  [['id', 'value'], ['division_name', 'label']]
+            const eventTypeFound = await db.event_type.findAll({
+                attributes:  [['id', 'value'], ['event_type', 'label']]
             });
             
-            return { result: true, message: "Get all division success", data: divisionFound };
+            return { result: true, message: "Get all event type success", data: eventTypeFound };
         }catch(error){
             return { result: false, message: error, data: null };
         }
     },
-    Delete: async({ id }: DivisionDelete) => {
+    Delete: async({ id }: EventTypeDelete) => {
         try{
-            const divisionDeleted = await db.division.destroy({
+            const eventTypeDeleted = await db.event_type.destroy({
                 where: {
                     id
                 }
             });
 
-            return { result: true, message: "Delete division success", data: null };
+            return { result: true, message: "Event type success", data: null };
         }catch(error){
             return { result: false, message: error, data: null };
         }
