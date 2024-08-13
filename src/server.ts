@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import db from './models';
 import { DatamasterController } from './controllers/DatamasterController';
+import { EventController } from './controllers/EventController';
 
 const app = express();
 app.use(express.json());
@@ -25,3 +26,10 @@ app.delete('/api/v1/web/division/:id', DatamasterController.DivisionDelete);
 app.get('/api/v1/web/event-type', DatamasterController.EventTypeGetAll);
 app.post('/api/v1/web/event-type', DatamasterController.EventTypeCreate);
 app.delete('/api/v1/web/event-type/:id', DatamasterController.EventTypeDelete);
+
+app.get('/api/v1/web/event', EventController.EventFindAll);
+app.get('/api/v1/web/event/:id', EventController.EventFindById);
+app.post('/api/v1/web/event', EventController.EventCreate);
+app.delete('/api/v1/web/event/:id', EventController.EventDelete);
+
+
