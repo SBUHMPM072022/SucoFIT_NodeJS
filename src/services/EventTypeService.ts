@@ -38,7 +38,7 @@ export const EventTypeService = {
                 }
             });
 
-            return { result: true, message: "Event type success", data: null };
+            return { result: true, message: "Delete event type success", data: null };
         }catch(error){
             return { result: false, message: error, data: null };
         }

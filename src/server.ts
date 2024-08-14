@@ -27,6 +27,10 @@ app.get('/api/v1/web/event-type', DatamasterController.EventTypeGetAll);
 app.post('/api/v1/web/event-type', DatamasterController.EventTypeCreate);
 app.delete('/api/v1/web/event-type/:id', DatamasterController.EventTypeDelete);
 
+app.get('/api/v1/web/role', DatamasterController.RoleGetAll);
+app.post('/api/v1/web/role', DatamasterController.RoleCreate);
+app.delete('/api/v1/web/role/:id', DatamasterController.RoleDelete);
+
 app.get('/api/v1/web/event', EventController.EventFindAll);
 app.get('/api/v1/web/event/:id', EventController.EventFindById);
 app.post('/api/v1/web/event', EventController.EventCreate);

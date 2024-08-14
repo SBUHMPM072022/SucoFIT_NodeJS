@@ -2,6 +2,7 @@ import { CustomRequest } from "../interfaces/ExpressCustomInterface";
 import { Response } from "express";
 import { DivisionService } from "../services/DivisionService";
 import { EventTypeService } from "../services/EventTypeService";
+import { RoleService } from "../services/RoleService";
 
 export const DatamasterController = {
 
@@ -119,6 +120,64 @@ export const DatamasterController = {
             };
 
             res.status(200).json({ status: 'success', message: eventTypeDeleted.message, data: eventTypeDeleted.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
+
+    // Role Controller
+    RoleCreate: async(req: CustomRequest, res: Response) => {
+        try{
+            const {
+                role
+            } = req.body;
+
+            const roleCreated = await RoleService.Create({ role });
+
+            if(!roleCreated.result){
+                throw {
+                    message: roleCreated.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: roleCreated.message, data: roleCreated.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
+    RoleGetAll: async(req: CustomRequest, res: Response) => {
+        try{
+            const roleFound = await RoleService.GetAll();
+
+            if(!roleFound.result){
+                throw {
+                    message: roleFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: roleFound.message, data: roleFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
+    RoleDelete: async(req: CustomRequest, res: Response) => {
+        try{
+            const { id } = req.params;
+            const roleDeleted = await RoleService.Delete({ id: parseInt(id) });
+
+            if(!roleDeleted.result){
+                throw {
+                    message: roleDeleted.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: roleDeleted.message, data: roleDeleted.data });
         }catch(error: any){
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
