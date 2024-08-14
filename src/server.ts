@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import db from './models';
 import { DatamasterController } from './controllers/DatamasterController';
 import { EventController } from './controllers/EventController';
+import { ParticipantController } from './controllers/ParticipantController';
 
 const app = express();
 app.use(express.json());
@@ -35,5 +36,9 @@ app.get('/api/v1/web/event', EventController.EventFindAll);
 app.get('/api/v1/web/event/:id', EventController.EventFindById);
 app.post('/api/v1/web/event', EventController.EventCreate);
 app.delete('/api/v1/web/event/:id', EventController.EventDelete);
+
+app.get('/api/v1/web/participant', ParticipantController.ParticipantFindAll);
+app.post('/api/v1/web/participant', ParticipantController.ParticipantCreate);
+app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelete);
 
 
