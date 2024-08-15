@@ -7,6 +7,10 @@ export const UserModel = (sequelize: any, Sequelize: any) => {
             allowNull: false,
             unique: true
         },
+        fullname: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         role_id: {
             type: Sequelize.INTEGER,
             allowNull: false

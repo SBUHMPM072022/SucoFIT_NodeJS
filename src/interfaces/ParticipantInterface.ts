@@ -4,7 +4,7 @@ export interface ParticipantCreate {
     join_date: String
     activity_start: String
     activity_stop: String
-    duration: number
+    duration?: number
     presence_latitude: String
     presence_longitude: String
     participant_evidence: String

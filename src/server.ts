@@ -4,6 +4,7 @@ import db from './models';
 import { DatamasterController } from './controllers/DatamasterController';
 import { EventController } from './controllers/EventController';
 import { ParticipantController } from './controllers/ParticipantController';
+import { UserController } from './controllers/UserController';
 
 const app = express();
 app.use(express.json());
@@ -19,6 +20,9 @@ app.listen(process.env.SERVER_PORT, () => console.log(`Server is running in port
 app.get('/', (req: Request, res: Response) => {
     return res.status(200).send({ message: 'Yay! SucoFIT server is working' });
 });
+
+app.post('/api/v1/web/register', UserController.UserRegister);
+app.delete('/api/v1/web/user/:id', UserController.UserDelete);
 
 app.get('/api/v1/web/division', DatamasterController.DivisionGetAll);
 app.post('/api/v1/web/division', DatamasterController.DivisionCreate);
@@ -40,5 +44,3 @@ app.delete('/api/v1/web/event/:id', EventController.EventDelete);
 app.get('/api/v1/web/participant', ParticipantController.ParticipantFindAll);
 app.post('/api/v1/web/participant', ParticipantController.ParticipantCreate);
 app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelete);
-
-
