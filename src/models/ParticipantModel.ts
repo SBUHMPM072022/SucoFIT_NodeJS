@@ -20,7 +20,7 @@ export const ParticipantModel = (sequelize: any, Sequelize: any) => {
         },
         duration: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         presence_latitude: {
             type: Sequelize.STRING

@@ -46,6 +46,14 @@ export const ParticipantController = {
         try{
             const { event_id } : any = req.query;
 
+            if(!event_id){
+                throw {
+                    message: "event id must be mandatory",
+                    code: "BAD_REQUEST",
+                    statusCode: 400
+                }
+            }
+
             const participantFound = await ParticipantnService.FindAll({ id: parseInt(event_id) })
 
             if(!participantFound.result){

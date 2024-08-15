@@ -1,4 +1,5 @@
 import { DBConfigInput } from "../interfaces/HelperInterface";
+import { Seeder } from "../seeders/Seeder";
 
 export const ConfigDB = {
     Setting: ({ db, pg, Sequelize, dbName }: DBConfigInput) => {
@@ -22,5 +23,13 @@ export const ConfigDB = {
         });
 
         return sequelize;
+    }
+}
+
+export const Seeding = {
+    Start: () => {
+        Seeder.Down().then(() => {
+            Seeder.Up();
+        });
     }
 }

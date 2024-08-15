@@ -5,6 +5,8 @@ import { DatamasterController } from './controllers/DatamasterController';
 import { EventController } from './controllers/EventController';
 import { ParticipantController } from './controllers/ParticipantController';
 import { UserController } from './controllers/UserController';
+import { Seeder } from './seeders/Seeder';
+import { Seeding } from './utils/helper';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +16,8 @@ app.use('/public',express.static('uploads'));
 dotenv.config();
 
 // db.sequelize.sync({ alter: true });
+
+// Seeding.Start();
 
 app.listen(process.env.SERVER_PORT, () => console.log(`Server is running in port ${process.env.SERVER_PORT}`));
 

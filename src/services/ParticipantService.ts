@@ -43,9 +43,9 @@ export const ParticipantnService = {
                     d.division_name ,
                     to_char(p.join_date, 'DD Mon YYYY') as join_date,
                     EXTRACT(EPOCH FROM (p.activity_stop  - p.activity_start)) / 60 as duration,
-                    p.presence_latitude,
-                    p.presence_longitude,
-                    p.participation_evidence
+                    p.presence_latitude ,
+                    p.presence_longitude ,
+                    CONCAT('public/photos/',p.participation_evidence) as participant_evidence
                     from participants p 
                     left join users u on u.id = p.user_id 
                     left join events e on e.id = p.event_id 
