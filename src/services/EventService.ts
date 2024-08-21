@@ -93,6 +93,7 @@ export const EventService = {
             const eventFound = await db.sequelize.query(
                 `
                     select 
+                    e.id,
                     e.event_name ,
                     e.pic ,
                     e."location" ,
