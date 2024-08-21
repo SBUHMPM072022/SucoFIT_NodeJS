@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import db from './models';
+import cors from 'cors';
 import { DatamasterController } from './controllers/DatamasterController';
 import { EventController } from './controllers/EventController';
 import { ParticipantController } from './controllers/ParticipantController';
@@ -14,6 +15,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public',express.static('uploads'));
 
 dotenv.config();
+
+const corsOptions = {
+    origin: process.env.FE_URL,
+    credentials: true
+}
+app.use(cors(corsOptions));
 
 // db.sequelize.sync({ alter: true });
 
