@@ -38,6 +38,23 @@ export const UserController = {
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
+    GetLeaderBoard: async(req: CustomRequest, res: Response) => {
+        try{
+            const userFound = await UserService.GetLeaderBoard();
+
+            if(!userFound.result){
+                throw {
+                    message: userFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: userFound.message, data: userFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
     UserDelete: async(req: CustomRequest, res: Response) => {
         try{
             const { id } = req.params;

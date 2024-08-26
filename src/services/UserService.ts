@@ -27,6 +27,17 @@ export const UserService = {
             return { result: false, message: error, data: null };
         }
     },
+    GetLeaderBoard: async () => {
+        try{
+            const userFound = await db.user.findAll({
+                attributes: ['id', 'username', 'fullname', 'total_point'],
+                order: [['total_point', 'desc']]
+            });
+            return { result: true, message: "Get leaderboard success", data: userFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
     Delete: async({ id }: UserDelete) => {
         try{
             await db.user.destroy({
