@@ -8,6 +8,7 @@ import { ParticipantController } from './controllers/ParticipantController';
 import { UserController } from './controllers/UserController';
 import { Seeder } from './seeders/Seeder';
 import { Seeding } from './utils/helper';
+import { RewardController } from './controllers/RewardController';
 
 const app = express();
 app.use(express.json());
@@ -55,3 +56,6 @@ app.delete('/api/v1/web/event/:id', EventController.EventDelete);
 app.get('/api/v1/web/participant', ParticipantController.ParticipantFindAll);
 app.post('/api/v1/web/participant', ParticipantController.ParticipantCreate);
 app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelete);
+
+app.get('/api/v1/web/reward', RewardController.RewardFindAll);
+app.post('/api/v1/web/reward', ParticipantController.ParticipantCreate);
