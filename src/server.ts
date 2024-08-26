@@ -59,4 +59,5 @@ app.post('/api/v1/web/participant', ParticipantController.ParticipantCreate);
 app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelete);
 
 app.get('/api/v1/web/reward', RewardController.RewardFindAll);
+app.put('/api/v1/web/reward/:id', RewardController.RewardUpdate);
 app.post('/api/v1/web/reward', RewardController.RewardCreate);

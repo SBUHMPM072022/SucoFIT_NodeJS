@@ -4,3 +4,8 @@ export interface RewardCreate {
     start_rank: string
     end_rank: string
 }
+
+export interface RewardUpdate {
+    description: string
+    prize: number
+}

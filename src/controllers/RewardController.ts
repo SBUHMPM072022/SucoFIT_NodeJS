@@ -33,6 +33,25 @@ export const RewardController = {
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
+    RewardUpdate: async(req: CustomRequest, res: Response) => {
+        try{
+            const { id } = req.params;
+
+            const {
+                description,
+                prize,
+            } = req.body;
+
+            const rewardUpdated = await RewardService.Update({
+                description,
+                prize
+            }, { reward_id: parseInt(id) });
+
+            res.status(200).json({ status: 'success', message: rewardUpdated.message, data: rewardUpdated.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
     RewardFindAll: async(req: CustomRequest, res: Response) => {
         try{
 

@@ -1,5 +1,5 @@
 import db from "../models"
-import { RewardCreate } from "../interfaces/RewardInterface";
+import { RewardCreate, RewardUpdate } from "../interfaces/RewardInterface";
 
 export const RewardService = {
     Create: async({
@@ -23,6 +23,28 @@ export const RewardService = {
             }
             
             return { result: true, message: "Create reward success", data: null };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    Update: async({
+        description,
+        prize
+    }: RewardUpdate, { reward_id }: any) => {
+        try{
+            const rewardUpdated = await db.reward.update(
+                {
+                    description,
+                    prize
+                },
+                {
+                    where: {
+                        id: reward_id
+                    }
+                }
+            )
+
+            return { result: true, message: "Update reward success", data: rewardUpdated };
         }catch(error){
             return { result: false, message: error, data: null };
         }
