@@ -1,24 +1,28 @@
 import db from "../models"
-import { DivisionDelete, DivisionCreate } from "../interfaces/DivisionInterface";
-import { ParticipantCreate, ParticipantDelete, ParticipantFindId } from "../interfaces/ParticipantInterface";
 import { RewardCreate } from "../interfaces/RewardInterface";
 
 export const RewardService = {
     Create: async({
-        position,
-        description,
-        prize,
-        created_user
+        start_date,
+        end_date,
+        start_rank,
+        end_rank
     }: RewardCreate) => {
         try{
-            const rewardCreated = await db.reward.create({
-                position,
-                description,
-                prize,
-                created_user
-            });
-
-            return { result: true, message: "Create reward success", data: rewardCreated };
+            await db.reward.truncate();
+            for (let i = parseInt(start_rank); i <= parseInt(end_rank); i++) {
+                try {
+                  await db.reward.create({
+                    position: i,
+                    start_date: start_date,
+                    end_date: end_date
+                  });
+                } catch (error) {
+                  console.error(error);
+                }
+            }
+            
+            return { result: true, message: "Create reward success", data: null };
         }catch(error){
             return { result: false, message: error, data: null };
         }
@@ -36,19 +40,6 @@ export const RewardService = {
             );
 
             return { result: true, message: "Find all reward success", data: rewardFound };
-        }catch(error){
-            return { result: false, message: error, data: null };
-        }
-    },
-    Delete: async({ id }: ParticipantDelete) => {
-        try{
-            await db.participant.destroy({
-                where: {
-                    id
-                }
-            });
-
-            return { result: true, message: "Delete participant success", data: null };
         }catch(error){
             return { result: false, message: error, data: null };
         }

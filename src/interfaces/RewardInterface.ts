@@ -1,7 +1,6 @@
 export interface RewardCreate {
-    position: number
-    description?: string
-    prize?: string
-    created_user?: string
-    updated_user?: string
+    start_date: string
+    end_date: string
+    start_rank: string
+    end_rank: string
 }

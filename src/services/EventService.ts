@@ -1,5 +1,5 @@
 import db from "../models"
-import { EventCreate, EventDelete, EventFindId } from "../interfaces/EventInterface";
+import { EventCreate, EventDelete, EventFindId, EventUpdate } from "../interfaces/EventInterface";
 
 export const EventService = {
     Create: async({
@@ -36,6 +36,52 @@ export const EventService = {
 
             return { result: true, message: "Create event success", data: eventCreated };
         }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    Update: async({
+        event_name,
+        event_description,
+        event_type_id,
+        pic,
+        location,
+        latitude,
+        longitude,
+        registration_start_date,
+        registration_end_date,
+        event_start_date,
+        event_end_date,
+        point,
+        updated_user
+    }: EventUpdate, { event_id }: any) => {
+        try{
+
+            const eventUpdated = await db.event.update(
+                {
+                    event_name,
+                    event_description,
+                    event_type_id,
+                    pic,
+                    location,
+                    latitude,
+                    longitude,
+                    registration_start_date,
+                    registration_end_date,
+                    event_start_date,
+                    event_end_date,
+                    point,
+                    updated_user
+                },
+                {
+                    where: {
+                        id: event_id
+                    }
+                }
+            )
+
+            return { result: true, message: "Update event success", data: eventUpdated };
+        }catch(error){
+            console.log(error);
             return { result: false, message: error, data: null };
         }
     },

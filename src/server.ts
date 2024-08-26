@@ -51,6 +51,7 @@ app.delete('/api/v1/web/role/:id', DatamasterController.RoleDelete);
 app.get('/api/v1/web/event', EventController.EventFindAll);
 app.get('/api/v1/web/event/:id', EventController.EventFindById);
 app.post('/api/v1/web/event', EventController.EventCreate);
+app.put('/api/v1/web/event/:id', EventController.EventUpdate);
 app.delete('/api/v1/web/event/:id', EventController.EventDelete);
 
 app.get('/api/v1/web/participant', ParticipantController.ParticipantFindAll);
@@ -58,4 +59,4 @@ app.post('/api/v1/web/participant', ParticipantController.ParticipantCreate);
 app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelete);
 
 app.get('/api/v1/web/reward', RewardController.RewardFindAll);
-app.post('/api/v1/web/reward', ParticipantController.ParticipantCreate);
+app.post('/api/v1/web/reward', RewardController.RewardCreate);

@@ -49,6 +49,53 @@ export const EventController = {
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
+    EventUpdate: async(req: CustomRequest, res: Response) => {
+        try{
+            const { id } : any = req.params;
+            const {
+                event_name,
+                event_description,
+                event_type_id,
+                pic,
+                location,
+                latitude,
+                longitude,
+                registration_start_date,
+                registration_end_date,
+                event_start_date,
+                event_end_date,
+                point
+            } = req.body;
+
+            const eventUpdated = await EventService.Update({
+                event_name,
+                event_description,
+                event_type_id,
+                pic,
+                location,
+                latitude,
+                longitude,
+                registration_start_date,
+                registration_end_date,
+                event_start_date,
+                event_end_date,
+                point,
+                updated_user: 'admin'
+            }, { event_id: id })
+
+            if(!eventUpdated.result){
+                throw {
+                    message: eventUpdated.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: eventUpdated.message, data: eventUpdated.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
     EventFindById: async(req: CustomRequest, res: Response) => {
         try{
             const { id } = req.params;

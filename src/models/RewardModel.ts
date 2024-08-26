@@ -12,6 +12,12 @@ export const RewardModel = (sequelize: any, Sequelize: any) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        start_date: {
+            type: Sequelize.DATE
+        },
+        end_date: {
+            type: Sequelize.DATE
+        },
         created_user: {
             type: Sequelize.STRING
         },
