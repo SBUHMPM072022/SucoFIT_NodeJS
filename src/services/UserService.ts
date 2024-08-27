@@ -38,6 +38,45 @@ export const UserService = {
             return { result: false, message: error, data: null };
         }
     },
+    GetActiveUser: async () => {
+        try{
+            const userActiveFound = await db.sequelize.query(
+                `
+                    select count(*)
+                    from (
+                    	select user_id 
+                    	from participants p 
+                    	where activity_start is not null and activity_stop is not null
+                    	group by user_id 
+                    )sub1
+                `,
+                {
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            )
+
+            return { result: true, message: "Get active user success", data: userActiveFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    GetTotalUser: async() => {
+        try{
+            const userTotalFound = await db.sequelize.query(
+                `
+                    select count(*)
+                    from users u 
+                `,
+                {
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            );
+
+            return { result: true, message: "Get active user success", data: userTotalFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
     Delete: async({ id }: UserDelete) => {
         try{
             await db.user.destroy({

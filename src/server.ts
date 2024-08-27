@@ -37,6 +37,7 @@ app.post('/api/v1/web/register', UserController.UserRegister);
 app.delete('/api/v1/web/user/:id', UserController.UserDelete);
 
 app.get('/api/v1/web/leaderboard', UserController.GetLeaderBoard);
+app.get('/api/v1/web/activeuser', UserController.GetActiveUser);
 
 app.get('/api/v1/web/division', DatamasterController.DivisionGetAll);
 app.post('/api/v1/web/division', DatamasterController.DivisionCreate);

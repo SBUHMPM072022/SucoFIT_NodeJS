@@ -55,6 +55,30 @@ export const UserController = {
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
+    GetActiveUser: async(req: CustomRequest, res: Response) => {
+        try{
+            const userActiveFound = await UserService.GetActiveUser();
+            const userTotalFound = await UserService.GetTotalUser();
+
+            if(!userActiveFound.result){
+                throw {
+                    message: userActiveFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            const data = {
+                total_active_user: userActiveFound.data[0].count,
+                total_user: userTotalFound.data[0].count,
+                percentage: (100*parseInt(userActiveFound.data[0].count)/parseInt(userTotalFound.data[0].count)).toFixed(2)
+            }
+
+            res.status(200).json({ status: 'success', message: userActiveFound.message, data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
     UserDelete: async(req: CustomRequest, res: Response) => {
         try{
             const { id } = req.params;
