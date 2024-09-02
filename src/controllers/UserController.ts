@@ -11,8 +11,7 @@ export const UserController = {
                 division_id,
                 email,
                 phone_number,
-                password,
-                role_id
+                password
             } = req.body;
 
             const userCreated = await UserService.Register({
@@ -21,7 +20,7 @@ export const UserController = {
                 email,
                 phone_number,
                 password,
-                role_id,
+                role_id: 1,
                 created_user: 'admin'
             })
 

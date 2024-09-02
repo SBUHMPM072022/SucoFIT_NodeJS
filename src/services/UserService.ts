@@ -1,5 +1,6 @@
 import db from "../models"
 import { UserDelete, UserRegister } from "../interfaces/UserInterface";
+import { StringFormat } from "../utils/helper";
 
 export const UserService = {
     Register: async({
@@ -12,8 +13,10 @@ export const UserService = {
         created_user
     }: UserRegister) => {
         try{
+            const uniqueUsername = StringFormat.FormatName({ name: fullname });
             const userService = await db.user.create({
                 fullname,
+                username: uniqueUsername,
                 division_id,
                 role_id,
                 email,

@@ -33,3 +33,14 @@ export const Seeding = {
         });
     }
 }
+
+export const StringFormat = {
+    FormatName: ({ name }: any) => {
+        let formattedName = name.toLowerCase();
+        formattedName = formattedName.replace(/\s+/g, "_");
+        const randomDigits = Math.floor(100 + Math.random() * 900); // Menghasilkan angka antara 100 dan 999
+        formattedName += randomDigits;
+        
+        return formattedName;
+    }
+}
