@@ -1,5 +1,13 @@
 import { DBConfigInput } from "../interfaces/HelperInterface";
 import { Seeder } from "../seeders/Seeder";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+const TOKEN_SECRET_KEY: any = process.env.SECRET_KEY;
+const TOKEN_REFRESH_SECRET_KEY: any = process.env.SECRET_REFRESH_KEY;
 
 export const ConfigDB = {
     Setting: ({ db, pg, Sequelize, dbName }: DBConfigInput) => {
@@ -42,5 +50,55 @@ export const StringFormat = {
         formattedName += randomDigits;
         
         return formattedName;
+    }
+}
+
+export const Auth = {
+    ComparePassword: (hashPassword: string, password: string) => {
+        return bcrypt.compareSync(password, hashPassword);
+    },
+    GenerateTokenMobile: ({ userData }: any) => {
+        const token = jwt.sign(
+            {
+                id: userData.id,
+                username: userData.username,
+                email: userData.email,
+                role_id: userData.role_id,
+                fullname: userData.fullname
+            }, 
+            TOKEN_SECRET_KEY, 
+            { expiresIn: '6h' }
+        );
+
+        return token  
+    },
+    GenerateToken: ({ userData }: any) => {
+        const token = jwt.sign(
+            {
+                id: userData.id,
+                username: userData.username,
+                email: userData.email,
+                role_id: userData.role_id,
+                fullname: userData.fullname
+            }, 
+            TOKEN_SECRET_KEY, 
+            { expiresIn: '6h' }
+        );
+
+        return token  
+    },
+    GeneraterRefreshToken: ({ userData }: any) => {
+        const token = jwt.sign(
+            {
+                id: userData.id,
+                username: userData.username,
+                email: userData.email,
+                role_id: userData.role_id,
+                fullname: userData.fullname
+            },
+            TOKEN_REFRESH_SECRET_KEY,
+            { expiresIn: '6h' }
+          );
+          return token;
     }
 }

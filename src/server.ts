@@ -33,6 +33,8 @@ app.get('/', (req: Request, res: Response) => {
     return res.status(200).send({ message: 'Yay! SucoFIT server is working' });
 });
 
+app.post('/api/v1/web/login', UserController.Login);
+app.get('/api/v1/web/logout', UserController.Logout);
 app.post('/api/v1/web/register', UserController.UserRegister);
 app.delete('/api/v1/web/user/:id', UserController.UserDelete);
 
@@ -64,3 +66,5 @@ app.delete('/api/v1/web/participant/:id', ParticipantController.ParticipantDelet
 app.get('/api/v1/web/reward', RewardController.RewardFindAll);
 app.put('/api/v1/web/reward/:id', RewardController.RewardUpdate);
 app.post('/api/v1/web/reward', RewardController.RewardCreate);
+
+app.post('/api/v1/mobile/login', UserController.LoginMobile);

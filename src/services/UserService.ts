@@ -1,8 +1,51 @@
 import db from "../models"
-import { UserDelete, UserRegister } from "../interfaces/UserInterface";
-import { StringFormat } from "../utils/helper";
+import { UserDelete, UserLogin, UserRegister } from "../interfaces/UserInterface";
+import { Auth, StringFormat } from "../utils/helper";
 
 export const UserService = {
+    login: async ({
+        email,
+        password
+    }: UserLogin) => {
+        try{
+            const userFound = await db.user.findOne({ where: { email }, attributes: ['id', 'username', 'email', 'role_id', 'fullname'] });
+            if(!userFound) throw "Email is not valid please try again";
+            
+            const passwordFound = await db.user.findOne({ where: { email }, attributes: ['password'] });
+            
+            const isPasswordValid = Auth.ComparePassword(passwordFound.password, password);
+            
+            if(!isPasswordValid) throw "Password is not valid please try again";
+
+            const token = Auth.GenerateTokenMobile({ userData: userFound });
+            const refreshToken = Auth.GeneraterRefreshToken({ userData: userFound });
+
+            return { result: true, message: "Login user success", data: { token, refreshToken, role_id: userFound.role_id } };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    loginMobile: async ({
+        email,
+        password
+    }: UserLogin) => {
+        try{
+            const userFound = await db.user.findOne({ where: { email }, attributes: ['id', 'username', 'email', 'role_id', 'fullname'] });
+            if(!userFound) throw "Email is not valid please try again";
+            
+            const passwordFound = await db.user.findOne({ where: { email }, attributes: ['password'] });
+            
+            const isPasswordValid = Auth.ComparePassword(passwordFound.password, password);
+            
+            if(!isPasswordValid) throw "Password is not valid please try again";
+
+            const token = Auth.GenerateTokenMobile({ userData: userFound });
+
+            return { result: true, message: "Login user success", data: { token, role_id: userFound.role_id } };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
     Register: async({
         fullname,
         division_id,

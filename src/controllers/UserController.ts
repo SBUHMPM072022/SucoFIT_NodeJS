@@ -4,6 +4,64 @@ import { ParticipantnService } from "../services/ParticipantService";
 import { UserService } from "../services/UserService";
 
 export const UserController = {
+    Login: async(req: CustomRequest, res: Response) => {
+        try{
+            const { email, password } = req.body;
+
+            const userFound = await UserService.login({ email, password });
+
+            if(!userFound.result){
+                throw {
+                    message: userFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.cookie(`token`,userFound.data?.token, {
+                secure: false,
+                httpOnly: true
+            });
+
+            res.cookie(`refreshToken`,userFound.data?.refreshToken, {
+                secure: false,
+                httpOnly: true
+            });
+
+            res.status(200).json({ status: 'success', message: userFound.message, data: userFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error.message, data: null });
+        }
+    },
+    Logout: async(req: CustomRequest, res: Response) => {
+        try{
+            res.clearCookie('token');
+            res.clearCookie('refreshToken');
+
+            res.status(200).json({ status: 'success', message: null, data: null });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error.message, data: null });
+        }
+    },
+    LoginMobile: async(req: CustomRequest, res: Response) => {
+        try{
+            const { email, password } = req.body;
+
+            const userFound = await UserService.loginMobile({ email, password });
+
+            if(!userFound.result){
+                throw {
+                    message: userFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: userFound.message, data: userFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error.message, data: null });
+        }
+    },
     UserRegister: async(req: CustomRequest, res: Response) => {
         try{
             const {
