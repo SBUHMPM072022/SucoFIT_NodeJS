@@ -64,7 +64,10 @@ export const Auth = {
                 username: userData.username,
                 email: userData.email,
                 role_id: userData.role_id,
-                fullname: userData.fullname
+                fullname: userData.fullname,
+                phone_number: userData.phone_number,
+                division_name: userData.division_name,
+                profile_picture: userData.profile_picture
             }, 
             TOKEN_SECRET_KEY, 
             { expiresIn: '6h' }

@@ -11,6 +11,9 @@ export const UserModel = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        profile_picture: {
+            type: Sequelize.STRING
+        },
         role_id: {
             type: Sequelize.INTEGER,
             allowNull: false

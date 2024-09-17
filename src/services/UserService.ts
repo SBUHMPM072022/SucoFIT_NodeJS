@@ -30,8 +30,27 @@ export const UserService = {
         password
     }: UserLogin) => {
         try{
-            const userFound = await db.user.findOne({ where: { email }, attributes: ['id', 'username', 'email', 'role_id', 'fullname'] });
+            let userFound = await db.sequelize.query(
+                `
+                    select 
+                    u.id, u.username, u.email, u.fullname, u.role_id, u.total_point, 
+                    u.phone_number, r.role, d.division_name,
+                    CONCAT('public/photos/', profile_picture) profile_picture
+                    from users u
+                    join divisions d on d.id = u.division_id
+                    join roles r on r.id = u.role_id
+                    where u.email = :email
+                `,
+                {
+                    replacements: {
+                        email
+                    },
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            )
+
             if(!userFound) throw "Email is not valid please try again";
+            userFound = userFound[0];
             
             const passwordFound = await db.user.findOne({ where: { email }, attributes: ['password'] });
             
@@ -41,7 +60,7 @@ export const UserService = {
 
             const token = Auth.GenerateTokenMobile({ userData: userFound });
 
-            return { result: true, message: "Login user success", data: { token, role_id: userFound.role_id } };
+            return { result: true, message: "Login user success", data: { token, fullname: userFound.fullname, role_id: userFound.role_id, total_point: userFound.total_point, profile_picture: userFound.profile_picture } };
         }catch(error){
             return { result: false, message: error, data: null };
         }
@@ -76,7 +95,7 @@ export const UserService = {
     GetLeaderBoard: async () => {
         try{
             const userFound = await db.user.findAll({
-                attributes: ['id', 'username', 'fullname', 'total_point'],
+                attributes: ['id', 'username', 'fullname', 'total_point', [ db.Sequelize.literal(`CONCAT('public/photos/', profile_picture)`), 'profile_picture']],
                 order: [['total_point', 'desc']]
             });
             return { result: true, message: "Get leaderboard success", data: userFound };
