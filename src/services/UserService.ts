@@ -111,7 +111,7 @@ export const UserService = {
                     from (
                     	select user_id 
                     	from participants p 
-                    	where activity_start is not null and activity_stop is not null
+                    	where presence_date is not null
                     	group by user_id 
                     )sub1
                 `,

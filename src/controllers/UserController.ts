@@ -133,6 +133,8 @@ export const UserController = {
 
             res.status(200).json({ status: 'success', message: userActiveFound.message, data });
         }catch(error: any){
+            console.log(error);
+            
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
