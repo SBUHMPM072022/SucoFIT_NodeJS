@@ -69,5 +69,24 @@ export const RewardController = {
         }catch(error: any){
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
+    },
+    RewardFindById: async(req: CustomRequest, res: Response) => {
+        try{
+
+            const { id } = req.params;
+            const rewardFound = await RewardService.FindById(parseInt(id));
+
+            if(!rewardFound.result){
+                throw {
+                    message: rewardFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: rewardFound.message, data: rewardFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
     }
 }

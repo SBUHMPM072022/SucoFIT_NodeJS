@@ -154,5 +154,25 @@ export const UserController = {
         }catch(error: any){
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
+    },
+    GetPointByUser: async(req: CustomRequest, res: Response) => {
+        try{
+            const { user_id }: any = req.params;
+            console.log(user_id);
+            
+            const userFound = await UserService.GetPointByUser( user_id );
+
+            if(!userFound.result){
+                throw {
+                    message: userFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: userFound.message, data: userFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
     }
 }

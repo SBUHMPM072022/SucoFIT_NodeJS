@@ -60,7 +60,7 @@ export const UserService = {
 
             const token = Auth.GenerateTokenMobile({ userData: userFound });
 
-            return { result: true, message: "Login user success", data: { token, fullname: userFound.fullname, role_id: userFound.role_id, total_point: userFound.total_point, profile_picture: userFound.profile_picture } };
+            return { result: true, message: "Login user success", data: { token, fullname: userFound.fullname, role_id: userFound.role_id, total_point: userFound.total_point, profile_picture: userFound.profile_picture, user_id: userFound.id } };
         }catch(error){
             return { result: false, message: error, data: null };
         }
@@ -152,6 +152,40 @@ export const UserService = {
 
             return { result: true, message: "Delete user success", data: null };
         }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    AddPoint: async ({ point, user_id }: any) => {
+        try{
+            const userFound = await db.user.findOne({ where: { id: user_id } });
+            
+            const userAdded = await db.user.update(
+                {
+                    total_point: userFound.total_point + point
+                },
+                {
+                    where: {
+                        id: user_id
+                    }
+                }
+            );
+
+            return { result: true, message: "Add user point success", data: userAdded };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    GetPointByUser: async (user_id: any) => {
+        try{
+            const userFound = await db.user.findOne({
+                where: { id: parseInt(user_id) },
+                attributes: ['total_point']
+            })
+
+            return { result: true, message: "Get user point success", data: userFound };
+        }catch(error){
+            // console.log(error);
+            
             return { result: false, message: error, data: null };
         }
     }

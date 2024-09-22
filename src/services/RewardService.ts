@@ -65,5 +65,13 @@ export const RewardService = {
         }catch(error){
             return { result: false, message: error, data: null };
         }
+    },
+    FindById: async(id :number) => {
+        try{
+            const rewardFound = await db.reward.findOne({ where: { id } })
+            return { result: true, message: "Find reward by id success", data: rewardFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
     }
 }

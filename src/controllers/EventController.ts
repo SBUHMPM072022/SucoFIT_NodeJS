@@ -2,6 +2,7 @@ import { CustomRequest } from "../interfaces/ExpressCustomInterface";
 import { Response } from "express";
 import { DivisionService } from "../services/DivisionService";
 import { EventService } from "../services/EventService";
+import { ParticipantnService } from "../services/ParticipantService";
 
 export const EventController = {
     EventCreate: async(req: CustomRequest, res: Response) => {
@@ -96,11 +97,59 @@ export const EventController = {
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
     },
+    EventJoin: async(req: CustomRequest, res: Response) => {
+        try{
+            const { event_id, user_id } = req.body;
+
+
+            const checkHasJoined = await ParticipantnService.CheckIsJoined({ user_id, event_id });
+            
+            if(checkHasJoined.data){
+                throw {
+                    message: "user has joined",
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 211
+                }
+            }
+
+            const eventJoined = await EventService.Join({ event_id, user_id });
+
+            if(!eventJoined.result){
+                throw {
+                    message: eventJoined.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: eventJoined.message, data: eventJoined.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
     EventFindById: async(req: CustomRequest, res: Response) => {
         try{
             const { id } = req.params;
 
             const eventFound = await EventService.FindById({ id: parseInt(id) });
+
+            if(!eventFound.result){
+                throw {
+                    message: eventFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: eventFound.message, data: eventFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
+    },
+    EventParticipationByUserId: async(req: CustomRequest, res: Response) => {
+        try{
+            const { user_id } = req.params;
+            const eventFound = await EventService.FindByUserId({ user_id });
 
             if(!eventFound.result){
                 throw {

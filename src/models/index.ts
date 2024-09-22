@@ -10,6 +10,9 @@ import { ParticipantModel } from "./ParticipantModel";
 import { RewardModel } from "./RewardModel";
 import { UserModel } from "./UserModel";
 import { RoleModel } from "./RoleModel";
+import { ExerciseModel } from "./ExerciseModel";
+import { ExerciseCategoryModel } from "./ExerciseCategory";
+import { ExerciseRecordModel } from "./ExerciseRecordModel";
 
 dotenv.config();
 
@@ -42,6 +45,9 @@ db.participant = ParticipantModel(sequelize, Sequelize);
 db.reward = RewardModel(sequelize, Sequelize);
 db.user = UserModel(sequelize, Sequelize);
 db.role = RoleModel(sequelize, Sequelize);
+db.exercise = ExerciseModel(sequelize, Sequelize);
+db.exercise_category = ExerciseCategoryModel(sequelize, Sequelize);
+db.exercise_record = ExerciseRecordModel(sequelize, Sequelize);
 
 db.division.hasMany(db.user, {
     foreignKey: "division_id",
@@ -77,6 +83,29 @@ db.user.hasMany(db.participant, {
 db.participant.belongsTo(db.user, {
     foreignKey: "user_id",
 });
+
+db.exercise_category.hasMany(db.exercise, {
+    foreignKey: "exercise_category_id",
+});
+db.exercise.belongsTo(db.exercise_category, {
+    foreignKey: "exercise_category_id",
+});
+
+db.exercise.hasMany(db.exercise_record, {
+    foreignKey: "exercise_id",
+});
+db.exercise_record.belongsTo(db.exercise, {
+    foreignKey: "exercise_id",
+});
+
+db.user.hasMany(db.exercise_record, {
+    foreignKey: "user_id",
+});
+db.exercise_record.belongsTo(db.user, {
+    foreignKey: "user_id",
+});
+
+
 
 export default db;
 

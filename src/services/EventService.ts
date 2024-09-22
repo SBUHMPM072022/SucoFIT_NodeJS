@@ -85,6 +85,22 @@ export const EventService = {
             return { result: false, message: error, data: null };
         }
     },
+    Join: async({
+        event_id,
+        user_id
+    }: any) => {
+        try{
+            const eventJoined = await db.participant.create({
+                event_id,
+                user_id,
+                join_date: new Date()
+            });
+
+            return { result: true, message: "Join event success", data: eventJoined };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
     GetAll: async() => {
         try{
             const eventFound = await db.event.findAll({
@@ -143,6 +159,7 @@ export const EventService = {
                     e.event_name ,
                     e.pic ,
                     e."location" ,
+                    e."point",
                     concat(to_char(e.registration_start_date, 'DD-Mon-YYYY'), ' - ', to_char(e.registration_start_date, 'DD-Mon-YYYY')) as registration_date,
                     concat(to_char(e.event_start_date, 'DD-Mon-YYYY'), ' - ', to_char(e.event_start_date, 'DD-Mon-YYYY')) as event_date
                     from events e 
@@ -154,6 +171,38 @@ export const EventService = {
             );
 
             return { result: true, message: "Find all event success", data: eventFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    FindByUserId: async({ user_id }: any) => {
+        try{
+            const eventFound = await db.sequelize.query(
+                `
+                   	select 
+                    e.id,
+                    e.event_name ,
+                    e.pic ,
+                    e."location" ,
+                    e."point",
+                    concat(to_char(e.registration_start_date, 'DD-Mon-YYYY'), ' - ', to_char(e.registration_start_date, 'DD-Mon-YYYY')) as registration_date,
+                    concat(to_char(e.event_start_date, 'DD-Mon-YYYY'), ' - ', to_char(e.event_start_date, 'DD-Mon-YYYY')) as event_date,
+                    p.id participation_id,
+                    p.user_id
+                    from events e 
+                    left join event_types et on et.id = e.event_type_id 
+                    join participants p on p.event_id = e.id 
+                    where p.user_id = :user_id and is_joined = false
+                `,
+                {
+                    replacements: {
+                        user_id
+                    },
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            );
+
+            return { result: true, message: "Find event participate by user id success", data: eventFound };
         }catch(error){
             return { result: false, message: error, data: null };
         }
