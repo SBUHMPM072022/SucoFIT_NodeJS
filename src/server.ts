@@ -83,9 +83,9 @@ app.put('/api/v1/web/reward/:id', RewardController.RewardUpdate);
 app.post('/api/v1/web/reward', RewardController.RewardCreate);
 
 app.get('/api/v1/web/exercise', ExerciseController.GetListExercise);
+app.get('/api/v1/web/exercise-story', ExerciseController.GetExerciseStory);
 app.post('/api/v1/web/exercise-record', uploadDocument, ExerciseRecordController.RecordCreate);
 
 app.get('/api/v1/web/user/get-point/:user_id', UserController.GetPointByUser);
-
 
 app.post('/api/v1/mobile/login', UserController.LoginMobile);

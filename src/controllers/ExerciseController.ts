@@ -21,5 +21,23 @@ export const ExerciseController = {
         }catch(error: any){
             res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
         }
+    },
+    GetExerciseStory: async (req: CustomRequest, res: Response) => {
+        try{
+            const { exercise_name } = req.query;
+            const exerciseStoryFound = await ExerciseService.GetExerciseStory({ exercise_name });
+
+            if(!exerciseStoryFound.result){
+                throw {
+                    message: exerciseStoryFound.message,
+                    code: "INTERNAL_SERVER_ERROR",
+                    statusCode: 500
+                }
+            };
+
+            res.status(200).json({ status: 'success', message: exerciseStoryFound.message, data: exerciseStoryFound.data });
+        }catch(error: any){
+            res.status(error.statusCode?error.statusCode: 500).json({ status: 'failed', message: error, data: null });
+        }
     }
 }

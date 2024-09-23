@@ -1,6 +1,8 @@
 import { CustomRequest } from "../interfaces/ExpressCustomInterface";
 import { Response } from "express";
 import { ExerciseRecordService } from "../services/ExerciseRecordService";
+import { UserService } from "../services/UserService";
+import { ExerciseService } from "../services/ExerciseService";
 
 export const ExerciseRecordController = {
     RecordCreate: async(req: CustomRequest, res: Response) => {
@@ -22,6 +24,10 @@ export const ExerciseRecordController = {
                     statusCode: 500
                 }
             };
+
+            const exerciseFound = await ExerciseService.GetExerciseById({ exercise_id });
+
+            const userPointUpdated = await UserService.AddPoint({ point: parseInt(exerciseFound.data.point), user_id: parseInt(user_id) });
 
             res.status(200).json({ status: 'success', message: exerciseRecordCreated.message, data: exerciseRecordCreated.data });
         }catch(error: any){
