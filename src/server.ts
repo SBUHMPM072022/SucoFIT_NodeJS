@@ -94,3 +94,4 @@ app.post('/api/v1/mobile/login', UserController.LoginMobile);
 
 app.get('/api/v1/web/dashboard/top-exercise', DashboardController.GetTopExercise);
 app.get('/api/v1/web/dashboard/medical-percentage', DashboardController.GetMedicalPercentage);
+app.get('/api/v1/web/dashboard/active-percentage', DashboardController.GetActivePercentage);

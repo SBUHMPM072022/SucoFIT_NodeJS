@@ -188,5 +188,60 @@ export const UserService = {
             
             return { result: false, message: error, data: null };
         }
+    },
+    GetActivityPercentage: async ({ division }: any) => {
+        try{
+            const userCount = await db.sequelize.query(
+                `
+                    select count(*)
+                    from users u 
+                    join (
+                    	select u.id 
+                    	from users u 
+                    	join divisions d on d.id = u.division_id 
+                    	join exercise_records er on er.user_id = u.id 
+                    	join participants p ON p.user_id = u.id 
+                    	where d.division_name = :division
+                    	group by u.id 
+                    )jq on jq.id = u.id
+                `,
+                {
+                    replacements: {
+                        division
+                    },
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            );
+
+            const userTotal = await db.sequelize.query(
+                `
+                    select count(*) from users u 
+                    join divisions d on d.id = u.division_id 
+                    where d.division_name = :division
+                `,
+                {
+                    replacements: {
+                        division
+                    },
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            );
+
+            const data = {
+                data_chart: [
+                    { name: "active", value: parseInt(userCount[0].count) },
+                    { name: "non-active", value: parseInt(userTotal[0].count) - parseInt(userCount[0].count) },
+                ],
+                percentage: parseFloat(((parseInt(userCount[0].count)/parseInt(userTotal[0].count))*100).toFixed(2)),
+                active_user: parseInt(userCount[0].count),
+                non_active_user: parseInt(userTotal[0].count)
+            }
+
+            return { result: true, message: "Get user active percentage success", data: data };
+        }catch(error){
+            console.log(error);
+            
+            return { result: false, message: error, data: null };
+        }
     }
 }
