@@ -88,5 +88,55 @@ export const ExerciseService = {
         }catch(error){
             return { result: false, message: error, data: null };
         }
+    },
+    GetTopExercise: async () => {
+        try{
+            const topExerciseFound = await db.sequelize.query(
+                `
+                    select 
+                    sub2.id, sub2.exercise_name, sub2.exercise_cover,
+                    sub2.frequency
+                    from (
+                    	select 
+                    	e.id, e.exercise_name , 
+                    	CONCAT('public/photos/', e.exercise_cover) exercise_cover,
+                    	case 
+                    		when jq.quantity is null then 0
+                    		else jq.quantity
+                    	end frequency
+                    	from exercises e 
+                    	left join (
+                    		select e.id ,
+                    		count(*) quantity
+                    		from exercise_records er 
+                    		right join exercises e on e.id = er.exercise_id 
+                    		where er.id is not null
+                    		group by e.id 
+                    	)jq on jq.id = e.id 
+                    )sub2
+                    order by sub2.frequency DESC
+                `,
+                {
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            )
+
+            const totalExerciseRecord = await db.sequelize.query(
+                `
+                    select count(*) from exercise_records er
+                `,
+                {
+                    type: db.sequelize.QueryTypes.SELECT 
+                }
+            );
+
+            topExerciseFound.map((value: any) => {
+                value.frequency = (value.frequency/totalExerciseRecord[0].count)*100
+            })
+
+            return { result: true, message: "Get top exercise success", data: topExerciseFound };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
     }
 }

@@ -14,6 +14,7 @@ import { RewardController } from './controllers/RewardController';
 import { ExerciseController } from './controllers/ExerciseController';
 import { storageUploadDocumentv2 } from './controllers/FileController';
 import { ExerciseRecordController } from './controllers/ExerciseRecordController';
+import { DashboardController } from './controllers/DashboardController';
 
 const app = express();
 app.use(express.json());
@@ -90,3 +91,5 @@ app.post('/api/v1/web/exercise-record', uploadDocument, ExerciseRecordController
 app.get('/api/v1/web/user/get-point/:user_id', UserController.GetPointByUser);
 
 app.post('/api/v1/mobile/login', UserController.LoginMobile);
+
+app.get('/api/v1/web/dashboard/top-exercise', DashboardController.GetTopExercise);
