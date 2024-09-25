@@ -93,3 +93,4 @@ app.get('/api/v1/web/user/get-point/:user_id', UserController.GetPointByUser);
 app.post('/api/v1/mobile/login', UserController.LoginMobile);
 
 app.get('/api/v1/web/dashboard/top-exercise', DashboardController.GetTopExercise);
+app.get('/api/v1/web/dashboard/medical-percentage', DashboardController.GetMedicalPercentage);

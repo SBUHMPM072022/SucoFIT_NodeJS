@@ -13,6 +13,8 @@ import { RoleModel } from "./RoleModel";
 import { ExerciseModel } from "./ExerciseModel";
 import { ExerciseCategoryModel } from "./ExerciseCategory";
 import { ExerciseRecordModel } from "./ExerciseRecordModel";
+import { MedicalRecordModel } from "./MedicalRecordModel";
+import { MedicalTypeModel } from "./MedicalTypeModel";
 
 dotenv.config();
 
@@ -48,6 +50,8 @@ db.role = RoleModel(sequelize, Sequelize);
 db.exercise = ExerciseModel(sequelize, Sequelize);
 db.exercise_category = ExerciseCategoryModel(sequelize, Sequelize);
 db.exercise_record = ExerciseRecordModel(sequelize, Sequelize);
+db.medical_record = MedicalRecordModel(sequelize, Sequelize);
+db.medical_type = MedicalTypeModel(sequelize, Sequelize);
 
 db.division.hasMany(db.user, {
     foreignKey: "division_id",
@@ -102,6 +106,13 @@ db.user.hasMany(db.exercise_record, {
     foreignKey: "user_id",
 });
 db.exercise_record.belongsTo(db.user, {
+    foreignKey: "user_id",
+});
+
+db.user.hasMany(db.medical_record, {
+    foreignKey: "user_id",
+});
+db.medical_record.belongsTo(db.user, {
     foreignKey: "user_id",
 });
 
