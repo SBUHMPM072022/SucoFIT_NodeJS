@@ -131,6 +131,30 @@ export const Seeder = {
                 created_user: "admin"
             }
         ]);
+
+        await db.reward.sync();
+        await db.reward.bulkCreate([
+            { 
+                position: 1,
+                description: 'Ranking 1 mendaptkan Rp. 1.000.000',
+                prize: 1000000,
+                created_user: 'admin'
+            },
+            { 
+                position: 2,
+                description: 'Ranking 2 mendaptkan Rp. 750.000',
+                prize: 750000,
+                created_user: 'admin'
+            },
+            { 
+                position: 3,
+                description: 'Ranking 3 mendaptkan Rp. 500.000',
+                prize: 500000,
+                created_user: 'admin'
+            },
+        ]);
+
+
     },
     
     Down: async () => {
@@ -140,5 +164,6 @@ export const Seeder = {
         await db.event_type.truncate({ cascade: true, restartIdentity: true });
         await db.division.truncate({ cascade: true, restartIdentity: true });
         await db.role.truncate({ cascade: true, restartIdentity: true });
+        await db.reward.truncate({ cascade: true, restartIdentity: true });
     }
 }

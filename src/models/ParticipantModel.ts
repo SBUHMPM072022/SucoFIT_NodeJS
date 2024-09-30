@@ -12,15 +12,8 @@ export const ParticipantModel = (sequelize: any, Sequelize: any) => {
             type: Sequelize.DATE,
             allowNull: false
         }, 
-        activity_start: {
+        presence_date: {
             type: Sequelize.DATE
-        },
-        activity_stop: {
-            type: Sequelize.DATE
-        },
-        duration: {
-            type: Sequelize.INTEGER,
-            allowNull: true
         },
         presence_latitude: {
             type: Sequelize.STRING
@@ -36,6 +29,10 @@ export const ParticipantModel = (sequelize: any, Sequelize: any) => {
         },
         updated_user: {
             type: Sequelize.STRING
+        },
+        is_joined: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     })
 }

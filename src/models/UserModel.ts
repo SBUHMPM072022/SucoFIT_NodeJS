@@ -11,6 +11,9 @@ export const UserModel = (sequelize: any, Sequelize: any) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        profile_picture: {
+            type: Sequelize.STRING
+        },
         role_id: {
             type: Sequelize.INTEGER,
             allowNull: false
@@ -41,6 +44,9 @@ export const UserModel = (sequelize: any, Sequelize: any) => {
             type: Sequelize.INTEGER,
             allowNull: false, 
             defaultValue: 0
+        },
+        weekly_exercise_target: {
+            type: Sequelize.INTEGER
         },
         created_user: {
             type: Sequelize.STRING

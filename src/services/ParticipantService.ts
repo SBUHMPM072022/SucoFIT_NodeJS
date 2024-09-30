@@ -1,6 +1,7 @@
 import db from "../models"
 import { DivisionDelete, DivisionCreate } from "../interfaces/DivisionInterface";
 import { ParticipantCreate, ParticipantDelete, ParticipantFindId } from "../interfaces/ParticipantInterface";
+import { where } from "sequelize";
 
 export const ParticipantnService = {
     Create: async({
@@ -30,6 +31,31 @@ export const ParticipantnService = {
             });
 
             return { result: true, message: "Create participant success", data: participantCreated };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    Update: async({
+        id,
+        presence_latitude,
+        presence_longitude,
+        participation_evidence
+    }: any) => {
+        try{
+            const participantUpdated = await db.participant.update(
+                {
+                    presence_date: new Date(),
+                    presence_latitude,
+                    presence_longitude,
+                    participation_evidence,
+                    is_joined: true
+                },
+                {
+                    where: { id }
+                }
+            )
+
+            return { result: true, message: "Update participant success", data: participantUpdated };
         }catch(error){
             return { result: false, message: error, data: null };
         }
@@ -74,6 +100,22 @@ export const ParticipantnService = {
             });
 
             return { result: true, message: "Delete participant success", data: null };
+        }catch(error){
+            return { result: false, message: error, data: null };
+        }
+    },
+    CheckIsJoined: async({ user_id, event_id }: any) => {
+        try{
+            const userFound = await db.participant.findOne(
+                {
+                    where: {
+                        user_id,
+                        event_id
+                    }
+                }
+            );
+
+            return { result: true, message: "Check user has joined success", data: userFound };
         }catch(error){
             return { result: false, message: error, data: null };
         }

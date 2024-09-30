@@ -11,3 +11,8 @@ export interface UserRegister {
 export interface UserDelete {
     id: number
 }
+
+export interface UserLogin {
+    email: String
+    password: string
+}
