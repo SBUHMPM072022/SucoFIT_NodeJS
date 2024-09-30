@@ -15,6 +15,7 @@ import { ExerciseController } from './controllers/ExerciseController';
 import { storageUploadDocumentv2 } from './controllers/FileController';
 import { ExerciseRecordController } from './controllers/ExerciseRecordController';
 import { DashboardController } from './controllers/DashboardController';
+import { SpotController } from './controllers/SpotController';
 
 const app = express();
 app.use(express.json());
@@ -43,6 +44,7 @@ app.get('/', (req: Request, res: Response) => {
 const uploadDocument = multer({ storage: storageUploadDocumentv2 }).fields([
     { name: 'file_photo_evidence', maxCount: 1 },
     { name: 'file_photo_event_evidence', maxCount: 1 },
+    { name: 'file_photo_spot', maxCount: 1 },
 ]);
 
 app.post('/api/v1/web/login', UserController.Login);
@@ -87,6 +89,7 @@ app.get('/api/v1/web/exercise', ExerciseController.GetListExercise);
 app.get('/api/v1/web/exercise/story', ExerciseController.GetListExerciseStory);
 app.get('/api/v1/web/exercise-story', ExerciseController.GetExerciseStory);
 app.post('/api/v1/web/exercise-record', uploadDocument, ExerciseRecordController.RecordCreate);
+app.post('/api/v1/web/exercise-record', uploadDocument, ExerciseRecordController.RecordCreate);
 
 app.get('/api/v1/web/user/get-point/:user_id', UserController.GetPointByUser);
 
@@ -95,3 +98,9 @@ app.post('/api/v1/mobile/login', UserController.LoginMobile);
 app.get('/api/v1/web/dashboard/top-exercise', DashboardController.GetTopExercise);
 app.get('/api/v1/web/dashboard/medical-percentage', DashboardController.GetMedicalPercentage);
 app.get('/api/v1/web/dashboard/active-percentage', DashboardController.GetActivePercentage);
+
+app.get('/api/v1/web/spot', SpotController.GetListSpot);
+app.get('/api/v1/web/spot/:spot_id', SpotController.GetSpotById);
+app.post('/api/v1/web/spot', uploadDocument, SpotController.Create);
+app.get('/api/v1/web/spot-review/:spot_id', SpotController.GetListReview);
+app.post('/api/v1/web/spot-review', SpotController.CreateReview);

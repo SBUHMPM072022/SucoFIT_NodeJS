@@ -55,6 +55,7 @@ export const RewardService = {
                 `
                     select *
                     from rewards r
+                    order by r.position ASC
                 `,
                 {
                     type: db.sequelize.QueryTypes.SELECT 
