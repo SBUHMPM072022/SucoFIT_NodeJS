@@ -131,7 +131,7 @@ export const ExerciseService = {
             );
 
             topExerciseFound.map((value: any) => {
-                value.frequency = (value.frequency/totalExerciseRecord[0].count)*100
+                value.frequency = ((value.frequency/totalExerciseRecord[0].count)*100).toFixed(2)
             })
 
             return { result: true, message: "Get top exercise success", data: topExerciseFound };
